@@ -41,8 +41,8 @@ VideoRendererId rendererId_from_opt_name(const QString& name) {
 
 int main(int argc, char *argv[])
 {
-    qDebug() << aboutQtAV_PlainText();
-    Config::setName(QString::fromLatin1("Player"));
+    // qDebug() << aboutQtAV_PlainText();
+    Config::setName(QString::fromLatin1("Stream Viewer"));
     QOptions options = get_common_options();
     options.add(QString::fromLatin1("player options"))
             ("ffmpeg-log",  QString(), QString::fromLatin1("ffmpeg log level. can be: quiet, panic, fatal, error, warn, info, verbose, debug. this can override env 'QTAV_FFMPEG_LOG'"))
@@ -76,8 +76,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setAttribute(Qt::AA_DontCreateNativeWidgetSiblings);
     qDebug() <<a.arguments();
-    a.setApplicationName(QString::fromLatin1("Player"));
-//    a.setApplicationDisplayName(QString::fromLatin1("QtAV Player"));
+    a.setApplicationName(QString::fromLatin1("Stream Viewer"));
     QDir::setCurrent(qApp->applicationDirPath());
 
     do_common_options(options);
@@ -98,7 +97,7 @@ int main(int argc, char *argv[])
     NViewerMainWindow window;
     window.setProperty("rendererId", rendererId_from_opt_name(vo.toLower()));
     window.show();
-    window.setWindowTitle(QString::fromLatin1("QtAV %1 wbsecg1@gmail.com").arg(QtAV_Version_String_Long()));
+    window.setWindowTitle(QString::fromLatin1("Stream Viewer"));
     AppEventFilter ae(&window);
     qApp->installEventFilter(&ae);
 

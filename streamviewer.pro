@@ -3,7 +3,6 @@ CONFIG += c++11 console
 CONFIG -= app_bundle
 TARGET	= streamviewer
 
-
 #include( ../../common.pri )
 
 contains(QT_CONFIG, opengl): QT += opengl

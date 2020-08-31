@@ -26,5 +26,6 @@
         <file>dark/close.svg</file>
         <file>default/volume.svg</file>
         <file>default/mute.svg</file>
+        <file>dark/streamviewer.svg</file>
     </qresource>
 </RCC>

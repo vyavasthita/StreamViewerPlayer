@@ -81,7 +81,6 @@ signals:
 
 private slots:
     void stopUnload();
-    void about();
     void help();
     void openUrl();
     void initAudioTrackMenu();
@@ -136,7 +135,6 @@ private slots:
 
     void onUserShaderChanged();
 
-    void donate();
     void setup();
 
     void handleFullscreenChange();

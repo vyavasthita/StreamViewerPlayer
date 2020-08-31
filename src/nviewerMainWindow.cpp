@@ -117,7 +117,7 @@ NViewerMainWindow::NViewerMainWindow(QWidget *parent) :
         QApplication::setStyle(QStyleFactory::create("Fusion"));
     #endif
 
-    setWindowIcon(QIcon(QString::fromLatin1(":/QtAV.svg")));
+    setWindowIcon(QIcon(QString::fromLatin1(":/theme/dark/streamviewer.svg")));
     mpOSD = new OSDFilter(this);
     mpSubtitle = new SubtitleFilter(this);
     mpChannelAction = 0;
@@ -158,7 +158,7 @@ void NViewerMainWindow::initPlayer()
     mIsReady = true;
     VideoRenderer *vo = VideoRenderer::create((VideoRendererId)property("rendererId").toInt());
     if (!vo || !vo->isAvailable() || !vo->widget()) {
-        QMessageBox::critical(0, QString::fromLatin1("QtAV"), tr("Video renderer is ") + tr("not availabe on your platform!"));
+        QMessageBox::critical(0, QString::fromLatin1("Stream Viewer"), tr("Video renderer is ") + tr("not availabe on your platform!"));
     }
     setRenderer(vo);
     //mpSubtitle->installTo(mpPlayer); //filter on frame
@@ -227,6 +227,7 @@ void NViewerMainWindow::setupUi()
     mpControl = new QWidget(this);
     mpControl->setMaximumHeight(30);
 
+
     //mpPreview = new QLable(this);
 
     mpTimeSlider = new Slider(mpControl);
@@ -265,6 +266,7 @@ void NViewerMainWindow::setupUi()
     mpInfoBtn = new QToolButton();
     mpInfoBtn->setToolTip(QString::fromLatin1("Media information"));
     mpInfoBtn->setIcon(QIcon(QString::fromLatin1(":/theme/dark/info.svg")));
+
     mpCaptureBtn = new QToolButton();
     mpCaptureBtn->setToolTip(tr("Capture"));
     mpCaptureBtn->setIcon(QIcon(QString::fromLatin1(":/theme/dark/capture.svg")));
@@ -318,9 +320,7 @@ void NViewerMainWindow::setupUi()
     mpMenu->addSeparator();
 
     //mpMenu->addAction(tr("Report"))->setEnabled(false); //report bug, suggestions etc. using maillist?
-    mpMenu->addAction(tr("About"), this, SLOT(about()));
     mpMenu->addAction(tr("Help"), this, SLOT(help()));
-    mpMenu->addAction(tr("Donate"), this, SLOT(donate()));
     mpMenu->addAction(tr("Setup"), this, SLOT(setup()));
     mpMenu->addSeparator();
     mpMenuBtn->setMenu(mpMenu);
@@ -519,13 +519,14 @@ void NViewerMainWindow::setupUi()
     mainLayout->addWidget(mpControl);
 
     QHBoxLayout *controlLayout = new QHBoxLayout();
-    controlLayout->setSpacing(0);
+    controlLayout->setSpacing(2);
     controlLayout->setContentsMargins(QMargins(1, 1, 1, 1));
     mpControl->setLayout(controlLayout);
     controlLayout->addWidget(mpCurrent);
     controlLayout->addWidget(mpTitle);
     QSpacerItem *space = new QSpacerItem(mpPlayPauseBtn->width(), mpPlayPauseBtn->height(), QSizePolicy::MinimumExpanding);
-    controlLayout->addSpacerItem(space);
+    QSpacerItem *space2= new QSpacerItem(mpPlayPauseBtn->width()/2, mpPlayPauseBtn->height(), QSizePolicy::MinimumExpanding);
+    controlLayout->addSpacerItem(space2);
     controlLayout->addWidget(mpVolumeSlider);
     controlLayout->addWidget(mpVolumeBtn);
     controlLayout->addWidget(mpCaptureBtn);
@@ -535,6 +536,8 @@ void NViewerMainWindow::setupUi()
     controlLayout->addWidget(mpForwardBtn);
     controlLayout->addWidget(mpOpenBtn);
     controlLayout->addWidget(mpInfoBtn);
+    controlLayout->addSpacerItem(space);
+    //controlLayout->addSpacerItem(space);
     controlLayout->addWidget(mpSpeed);
     //controlLayout->addWidget(mpSetupBtn);
     controlLayout->addWidget(mpMenuBtn);
@@ -1099,11 +1102,6 @@ void NViewerMainWindow::wheelEvent(QWheelEvent *e)
     mpRenderer->setRegionOfInterest((r | m.mapRect(viewport))&QRectF(QPointF(0,0), mpRenderer->videoFrameSize()));
 }
 
-void NViewerMainWindow::about()
-{
-    QtAV::about();
-}
-
 void NViewerMainWindow::help()
 {
     QString name = QString::fromLatin1("help-%1.html").arg(QLocale::system().name());
@@ -1517,12 +1515,6 @@ void NViewerMainWindow::onAVFilterAudioConfigChanged()
     mpAudioFilter->setEnabled(Config::instance().avfilterAudioEnable());
     mpAudioFilter->installTo(mpPlayer);
     mpAudioFilter->setOptions(Config::instance().avfilterAudioOptions());
-}
-
-void NViewerMainWindow::donate()
-{
-    //QDesktopServices::openUrl(QUrl("https://sourceforge.net/p/qtav/wiki/Donate%20%E6%8D%90%E8%B5%A0/"));
-    QDesktopServices::openUrl(QUrl(QString::fromLatin1("http://www.qtav.org/donate.html")));
 }
 
 void NViewerMainWindow::onBufferValueChanged()
